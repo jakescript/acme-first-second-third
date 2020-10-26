@@ -87,6 +87,7 @@
   ];
 
   function appendUsers(){
+    clearUsers();
       users.map(user => {
         const userElement = document.createElement("p");
         userElement.innerHTML = user.name;
@@ -101,6 +102,13 @@
     });
   };
 
+function clearUsers(){
+  listChildren.forEach(child => {
+    [...child.children].forEach(elms => {
+      if(elms.nodeName === "P") {child.removeChild(elms)};
+    });
+  });
+};
 
 lists.addEventListener("click", e => {
   const getId = (elm) => elm.id === e.target.key;
@@ -109,10 +117,10 @@ lists.addEventListener("click", e => {
 
     if(e.target.className === "selected"){
       e.target.className = "";
-      users[userIdx].selected = "false"
+      users[userIdx].selected = false
     }else{
       e.target.className = "selected";
-      users[userIdx].selected = "true"
+      users[userIdx].selected = true
     };
   };
 });
@@ -126,21 +134,22 @@ document.addEventListener("click", e => {
         const userDiv = users.find((user) => {
           return user.name === child.innerHTML
         })
-
-        console.log(userDiv);
+        const slotId = slots.indexOf(userDiv.slot);
+        // console.log(userDiv);
         if(e.target.className === "move-left"){
-          // console.log("Decrement Here", child)
+          userDiv.slot = slots[slotId - 1]
         }else if(e.target.className === "move-right"){
-          // console.log("Increment Here", child)
+          userDiv.slot = slots[slotId + 1]
         }
       }
     })
-  };
 
-  // appendUsers();
+    appendUsers();
+  };
 });
 
 appendUsers();
+// clearUsers()
 
 </script>
 </html>
