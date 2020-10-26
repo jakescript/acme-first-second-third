@@ -77,6 +77,7 @@
   // sort each list by ID
   const lists = document.getElementById("lists");
   const listChildren = [...lists.children];
+
   const slots = ["first", "second", "third"];
   const users = [
     {id: 1, name: "moe", slot: slots[0]},
@@ -113,12 +114,31 @@ lists.addEventListener("click", e => {
       e.target.className = "selected";
       users[userIdx].selected = "true"
     };
-
-    console.log(users[userIdx])
   };
-
 });
 
+document.addEventListener("click", e => {
+  if(e.target.nodeName === "BUTTON"){
+    const divChildren = [...e.target.parentElement.children]
+    divChildren.forEach(child => {
+      if(child.nodeName === "P" && child.className === "selected"){
+
+        const userDiv = users.find((user) => {
+          return user.name === child.innerHTML
+        })
+
+        console.log(userDiv);
+        if(e.target.className === "move-left"){
+          // console.log("Decrement Here", child)
+        }else if(e.target.className === "move-right"){
+          // console.log("Increment Here", child)
+        }
+      }
+    })
+  };
+
+  // appendUsers();
+});
 
 appendUsers();
 
