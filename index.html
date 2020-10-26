@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  body{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+  }
+
+  #lists{
+    display: flex;
+  }
+
+  #lists > div {
+    flex: 0 33%;
+    margin: 10px;
+    border: 2px solid lightcoral;
+  }
+
+  p:hover{
+    cursor: pointer;
+  }
+
+  p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    height: 50px;
+  }
+
+  button{
+    box-sizing: border-box;
+    padding: 5px 15px;
+    margin-top: 10px;
+    background: none;
+    border: 1px solid slateblue;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+  }
+
+  button:hover{
+    cursor: pointer;
+    background-color: slateblue;
+    color: white;
+  }
+
+  button:focus {outline:0;}
+
+  .selected{
+    background: slateblue;
+  }
+</style>
+<body>
+  <h1>Acme First, Second, Third</h1>
+  <div id="lists">
+    <div id="first">
+      <button class="move-right">></button>
+      <h1>First</h1>
+    </div>
+    <div id="second">
+      <button class="move-left"><</button>
+      <button class="move-right">></button>
+      <h1>Second</h1>
+    </div>
+    <div id="third">
+      <button class="move-left"><</button>
+      <h1>Third</h1>
+    </div>
+  </div>
+</body>
+<script>
+  // sort each list by ID
+  const lists = document.getElementById("lists");
+  const listChildren = [...lists.children];
+  const slots = ["first", "second", "third"];
+  const users = [
+    {id: 1, name: "moe", slot: slots[0]},
+    {id: 2, name: "larry", slot: slots[1]},
+    {id: 3, name: "curly", slot: slots[2]},
+    {id: 4, name: "lucy", slot: slots[2], selected: true}
+  ];
+
+  function appendUsers(){
+      users.map(user => {
+        const userElement = document.createElement("p");
+        userElement.innerHTML = user.name;
+        userElement.key = user.id;
+        if(user.selected){
+          userElement.className = "selected";
+        };
+
+        listChildren.forEach(child => {
+          if(child.id === user.slot) {child.appendChild(userElement)};
+        });
+    });
+  };
+
+
+lists.addEventListener("click", e => {
+  const getId = (elm) => elm.id === e.target.key;
+  if(e.target.nodeName === "P"){
+    let userIdx = users.findIndex(getId)
+
+    if(e.target.className === "selected"){
+      e.target.className = "";
+      users[userIdx].selected = "false"
+    }else{
+      e.target.className = "selected";
+      users[userIdx].selected = "true"
+    };
+
+    console.log(users[userIdx])
+  };
+
+});
+
+
+appendUsers();
+
+</script>
+</html>
